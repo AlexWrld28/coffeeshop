@@ -1,4 +1,4 @@
-public class Latte extends Beverage{
+public class Latte extends AbstractBeverageBuilder{
     public Latte(
             DrinkTemperature temperature,
             Size size,

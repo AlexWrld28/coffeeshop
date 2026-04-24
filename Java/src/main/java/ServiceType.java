@@ -1,6 +1,6 @@
 public enum ServiceType {
     DINE_IN,
-    DINE_OUT,
+    TAKEOUT,
     MOBILE;
 
     @Override

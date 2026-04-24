@@ -1,5 +1,6 @@
-public class LatteBuilder extends AbstractBeverageBuilder {
+class LatteBuilder extends AbstractBeverageBuilder {
     @Override
     public Beverage build() {
-        return new Latte(temperature, size, MilkType, sweetener, requireValidShots());}
+        return new Latte(temperature, size, milkType, sweetener, requireValidShots());
+    }
 }

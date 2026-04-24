@@ -1,68 +1,53 @@
-public abstract class Beverage {
-    private final String name;
-    private final DrinkTemperature temperature;
-    private final Size size;
-    private final MilkType milkType;
-    private final Sweetener sweetener;
-    private final Integer shots;
+public abstract class AbstractBeverageBuilder implements BeverageBuilder {
+    protected DrinkTemperature temperature = DrinkTemperature.HOT;
+    protected Size size = Size.MEDIUM;
+    protected MilkType milkType = MilkType.WHOLE;
+    protected Sweetener sweetener = Sweetener.NONE;
+    protected Integer shots;
 
-    protected Beverage(
-            String name,
-            DrinkTemperature temperature,
-            Size size,
-            MilkType milkType,
-            Sweetener sweetener,
-            Integer shots
-    ) {
-        this.name = name;
+    @Override
+    public BeverageBuilder setTemperature(DrinkTemperature temperature) {
         this.temperature = temperature;
-        this.size = size;
-        this.milkType = milkType;
-        this.sweetener = sweetener;
-        this.shots = shots;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public DrinkTemperature getTemperature() {
-        return temperature;
-    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public MilkType getMilkType() {
-        return milkType;
-    }
-
-    public Sweetener getSweetener() {
-        return sweetener;
-    }
-
-    public Integer getShots() {
-        return shots;
-    }
-
-    public abstract boolean supportsTemperature(DrinkTemperature temperature);
-
-    public abstract boolean supportsShots();
-
-    public String getDescription() {
-        StringBuilder description = new StringBuilder();
-        description.append(size).append(" ").append(temperature).append(" ").append(name);
-        description.append(" with ").append(milkType).append(" milk");
-        description.append(", sweetener: ").append(sweetener);
-        if (shots != null) {
-            description.append(", shots: ").append(shots);
-        }
-        return description.toString();
+        return this;
     }
 
     @Override
-    public String toString() {
-        return getDescription();
+    public BeverageBuilder setSize(Size size) {
+        this.size = size;
+        return this;
+    }
+
+    @Override
+    public BeverageBuilder setMilkType(MilkType milkType) {
+        this.milkType = milkType;
+        return this;
+    }
+
+    @Override
+    public BeverageBuilder setSweetener(Sweetener sweetener) {
+        this.sweetener = sweetener;
+        return this;
+    }
+
+    @Override
+    public BeverageBuilder setShots(int shots) {
+        this.shots = shots;
+        return this;
+    }
+
+    protected int requireValidShots() {
+        if (shots == null) {
+            return 1;
+        }
+        if (shots < 1 || shots > 3) {
+            throw new IllegalArgumentException("Espresso drinks must have between 1 and 3 shots.");
+        }
+        return shots;
+    }
+
+    protected void rejectShots(String beverageName) {
+        if (shots != null) {
+            throw new IllegalArgumentException(beverageName + " does not support espresso shots.");
+        }
     }
 }
